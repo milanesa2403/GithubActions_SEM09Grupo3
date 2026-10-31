@@ -1,16 +1,15 @@
 name: GitHub Actions demo
 
-run-name: ${{github.actor}} esta ejecutando un pipeline
+run-name: ${{ github.actor }} esta ejecutando un pipeline
 on: [push]
 
-Jobs:
+jobs:
    Saludar-Hello-World:
        runs-on: ubuntu-latest
        steps:
-            - run: echo "Este job ha sido ejecutado ${{github.event_name}}"
-            - run: echo "El nombre de la rama es ${{gitHub.ref}}. Y el repositorio es ${{github.repository}}"
+            - run: echo "Este job ha sido ejecutado ${{ github.event_name }}"
+            - run: echo "El nombre de la rama es ${{ github.ref }}. Y el repositorio es ${{ github.repository }}"
             - name: Checkout repository
-              uses: actions/checkout@v6
-              name: Listar los archivos del repositorio
+              uses: actions/checkout@v4
               run: |
-                ls ${{github.workspace}}
+                ls ${{ github.workspace }}
