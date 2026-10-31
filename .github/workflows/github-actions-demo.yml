@@ -1,6 +1,6 @@
 name: GitHub Actions demo
 
-run-name: ${{GitHub.actor}} esta ejecutando un pipeline
+run-name: ${{gitHub.actor}} esta ejecutando un pipeline
 on: [push]
 
 Jobs:
