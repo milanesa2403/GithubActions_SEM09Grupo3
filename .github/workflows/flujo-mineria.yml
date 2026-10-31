@@ -46,4 +46,4 @@ jobs:
             - run: echo "Verificar que la API responde en /health con curl"
             - run: echo "Revisar errores 5xx durante 3 minutos con CloudWatch"
             - run: echo "Si los errores 5xx superan 5%, volver a la version anterior (rollback en maximo 15 minutos)"
-            - run: echo "Avisar al equipo con Amazon SNS y el correo de GitHub Actions"
+            - run: echo "Avisar al equipo con Amazon SNS y el correo de GitHub Actions."
