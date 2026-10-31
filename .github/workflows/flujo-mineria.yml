@@ -1,14 +1,7 @@
 name: Pipeline Plataforma Mineria
 
 run-name: ${{github.actor}} esta ejecutando el pipeline de la Plataforma Mineria
-on:
-    push:
-        branches:
-            - 'releases/Revisar-Codigo'
-            - 'releases/Probar-Infraestructura'
-    pull_request:
-        branches:
-            - main
+on: [push, pull_request]
 
 jobs:
     Revisar-Codigo:
