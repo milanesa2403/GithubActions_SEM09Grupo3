@@ -1,0 +1,49 @@
+name: Pipeline Plataforma Mineria
+
+run-name: ${{github.actor}} esta ejecutando el pipeline de la Plataforma Mineria
+on:
+    push:
+        branches:
+            - 'releases/Revisar-Codigo'
+            - 'releases/Probar-Infraestructura'
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    Revisar-Codigo:
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "Job ejecutado por el evento ${{github.event_name}} en el repositorio ${{github.repository}}"
+            - run: echo "La rama es ${{github.ref}}"
+            - run: echo "Instalar Java 21 y Node 24 con actions/setup-java y actions/setup-node"
+            - run: echo "Analisis de estilo con Checkstyle (backend) y ESLint (frontend)"
+            - run: echo "Pruebas unitarias con JUnit 5 y cobertura minima de 70% con JaCoCo"
+            - run: echo "Empaquetar con mvn package (backend) y npm run build (frontend)"
+
+    Probar-Infraestructura-y-Carga:
+        runs-on: ubuntu-latest
+        needs: Revisar-Codigo
+        steps:
+            - run: echo "Instalar Terraform con hashicorp/setup-terraform"
+            - run: echo "Validar infraestructura con terraform fmt, terraform validate y terraform plan"
+            - run: echo "Prueba de carga con Grafana k6 de 300 usuarios durante 10 minutos"
+            - run: echo "Si hay mas de 5% de errores o el p95 supera 3 segundos, no se publica la version"
+
+    Publicar-en-AWS:
+        runs-on: ubuntu-latest
+        needs: Probar-Infraestructura-y-Carga
+        steps:
+            - run: echo "Aprobacion manual del equipo antes de publicar"
+            - run: echo "Aplicar infraestructura con terraform apply (VPC, EC2 con Auto Scaling, ALB, RDS, SQS, S3)"
+            - run: echo "Subir la nueva version con AWS CLI"
+            - run: echo "El Application Load Balancer reparte el trafico entre las zonas A y B (algoritmo por definir)"
+
+    Vigilar-y-Avisar:
+        runs-on: ubuntu-latest
+        needs: Publicar-en-AWS
+        steps:
+            - run: echo "Verificar que la API responde en /health con curl"
+            - run: echo "Revisar errores 5xx durante 3 minutos con CloudWatch"
+            - run: echo "Si los errores 5xx superan 5%, volver a la version anterior (rollback en maximo 15 minutos)"
+            - run: echo "Avisar al equipo con Amazon SNS y el correo de GitHub Actions"
